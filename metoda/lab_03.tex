@@ -2,16 +2,17 @@
 \textbf{Цель:} Сборка модуля ядра, работа с device tree.
 
 \vspace{5mm}
+\textbf{Описание:}Для начала нужно понять, что в ОС Linux выделяется два пространства: пространство ядра (Kernel Space) и пользовательское пространство (User Space).
+
+Эти два пространства разделены между собой, и взаимодействие может происходить только при помощи специального системного интерфейса (System Call Interface).
+
+\vspace{5mm}
 \textbf{Полезные ссылки:}
 \begin{itemize}
 	\item \href{https://linux-kernel-labs.github.io/refs/heads/master/labs/device_drivers.html}{Linux Kernel Labs: Character device drivers}.
 	\item \href{https://www.digi.com/resources/examples-guides/use-device-tree-overlays-to-patch-your-device-tree}{DiGi: Use Device Tree Overlays to Patch Your Device Tree}.
 \end{itemize}
 
-\vspace{5mm}
-\textbf{Описание:}Для начала нужно понять, что в ОС Linux выделяется два пространства: пространство ядра (Kernel Space) и пользовательское пространство (User Space).
-
-Эти два пространства разделены между собой, и взаимодействие может происходить только при помощи специального системного интерфейса (System Call Interface).
 
 \begin{center}
 	\includegraphics[width=\textwidth]{pic_12}
@@ -32,7 +33,11 @@
 
 В данной работе, мы создадим шаблон для символьного устройства, с которым можно будет взаимодействовать через пользовательское приложение.
 
-\section{}Сборка модуля
+\section{Сборка модуля}
+
+\subsection{}Запустите виртуальную машину. Логин и пароль для входа: student / usrstudent.
+
+\subsection{}Подключите по USB плату к ПК. Проверьте, и при необходимости подключите USB устройство FTDI RBM\_C1K5500VK018 к виртуальной машине (меню Device→USB).
 
 \subsection{}Откройте консоль комбинацией клавиш Ctrl+Alt+T
 
