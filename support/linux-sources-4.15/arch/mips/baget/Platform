@@ -1,0 +1,6 @@
+#
+# BAGET boards
+#
+platform-$(CONFIG_MACH_BAGET) += baget/
+cflags-$(CONFIG_MACH_BAGET)	+= -I$(srctree)/arch/mips/include/asm/mach-baget
+load-$(CONFIG_MACH_BAGET)	+= 0xffffffff80001000

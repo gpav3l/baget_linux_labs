@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pure HTML CSS Admin Template</title>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="js/led_ctrl.js"></script>
+    <script src="js/sys_info.js"></script>
+    <script> 
+      var menu_list = [
+        {label: "System", icon: "&#9732;", handler: "hw_handler"},
+        {label: "Leds", icon: "&#9734;", handler: "led_handler"},
+      ];
+
+      var cur_handler = "";
+
+      /**
+       * Make menu list, call at page load time
+       */
+      function make_menu() {
+        menu_list.forEach(function(item){
+          var a = document.createElement('a'); 
+          var link = document.createTextNode(item.label);  
+          a.appendChild(link); 
+          a.id = item.label;   
+          a.href = "#"; 
+          a.onclick= function(){onclick_menu(item.label)};
+          document.getElementById("menu").appendChild(a);  
+        });
+      }
+
+
+      /**
+       * Call when user click on menu item
+       */
+      function onclick_menu(item_id) {
+        // Clear from old content
+        document.getElementById("page_header").innerHTML = "";
+        document.getElementById("content").innerHTML = "";
+          
+        menu_list.forEach(function(item){  
+          if(item_id == item.label) {
+            document.getElementById(item.label).className="current";
+            curr_script = window[item.handler]();
+            cur_handler = item.handler;
+          }
+          else document.getElementById(item.label).className="";
+        });
+      }
+
+    </script>
+  </head>
+  <body onload="make_menu()">
+    <!-- (A) SIDEBAR -->
+    <div id="pgside">
+      <!-- (A1) BRANDING OR USER -->
+      <!-- LINK TO DASHBOARD OR LOGOUT -->
+      <div id="pguser">
+        <img src="pics/potato.png">
+        <i class="txt">BAGET ADMIN</i>
+      </div>
+      <!-- (A2) MENU ITEMS -->
+      <div id="menu">
+      </div>
+    </div>
+
+    <!-- (B) MAIN -->
+    <main id="pgmain">
+      <h1 id="page_header"></h1>
+      <div id="content">
+        </br></br></br>
+        <- Select one item from left side menu
+      </div>
+    </main>
+  </body>
+</html>
