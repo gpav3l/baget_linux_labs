@@ -1,0 +1,78 @@
+\chapter{Установка ОС на целевую платформу}
+\textbf{Цель:} Установить дистрибутив Debian 10 на целевую платформу.
+
+\textbf{Описание:} Нужно понимать, что ОС Linux делиться на две части. Ядро (Kernel) и файловую систему (rootfs). Ядро определяет какие возможности по взаимодействию с железом доступны пользователю и приложениям. Rootfs определяет какие инструменты есть в системе, порядок инициализации, запуска сервисов и прочие прикладные штуки. Дистрибутив это в большей степени наполнение rootfs. Не каждый дистрибутив имеет поддержку иной от x86 архитектур.
+
+Для установки debian воспользуемся инструментом под названием debootstrap, который отвечает за создание rootfs. Подробнее про этот инструмент, и возможности по его управлению, Вы можете найти на wiki проекта Debian.
+\section{Подготовка rootfs}
+
+\subsection{}Запустите виртуальную машину. Логин и пароль для входа: student / usrstudent.
+
+\subsection{} Запустите консоль нажав комбинацию клавиш на клавиатуре \textbf{Ctrl+Alt+T} \\
+
+\textbf{Внимание!} В консоли есть возможность автоматического продолжения ввода. Для этого необходимо ввести первые символы команды, или пути, и нажать клавишу TAB. Ввод продолжиться до тех пор, пока не появиться неопределённостью (к примеру у Вас есть два файла foo\_bar1 и foo\_bar2, при нажатии TAB будет вставлен текст до цифры). Двойное нажатие TAB приведёт к выводу всех возможных вариантов продолжения, если таковые есть.
+
+\subsection{}Создайте и перейдти в рабочий каталог в котором будет создан образ rootfs.
+\begin{lstlisting}
+# mkdir -p $BAGET/lab_01
+# cd $BAGET/lab_01 
+\end{lstlisting}
+
+\subsection{} Запустите утилиту debootstrap (при необходимсоти введите пароль usrstudent):
+\begin{lstlisting}
+# sudo debootstrap --include=aptitude,nano,wget \
+--foreign \
+--arch=mips64el buster rootfs
+\end{lstlisting}
+\textit{-{}-include=A,B,C..} - добавить в сборку указанные пакеты \\
+\textit{-{}-foreign} — только сгенерировать наполнение, применяется когда архитектура на которой запускается утилита отлична от архитектуры назначения. \\
+\textit{-{}-arch=mips64el} — указываем целевую архитектуру \\
+\textit{buster} — версия сборки \\
+\textit{rootfs} — путь к папке назначения, где будут размещены файлы \\
+
+\subsection{} Для продолжения установки, нам понадобиться утилита qemu позволяющая эмулировать различные архитектуры. Скопируем исполняемый файл qemu:
+\begin{lstlisting}
+# sudo cp /usr/bin/qemu-mips64el-static ./rootfs/usr/bin
+\end{lstlisting}
+и перейдём в созданную rootfs (привет дедушка контейнеров, chroot)
+\begin{lstlisting}
+# sudo chroot ./rootfs
+\end{lstlisting}
+
+\section{Настройка rootfs}
+
+\subsection{} Завершим работу debootstrap
+\begin{lstlisting}
+# export LANG=en_US.UTF-8
+# /debootstrap/debootstrap --second-stage
+\end{lstlisting}
+
+\subsection{}Добавим источники для установки ПО, для этого выполним следующие команды 
+\begin{lstlisting}
+# echo deb http://ftp.debian.org/debian buster \
+main contrib non-free  >> /etc/apt/sources.list
+
+# echo deb-src http://ftp.debian.org/debian buster \
+main contrib non-free >> /etc/apt/sources.list
+
+# echo deb http://ftp.debian.org/debian buster-updates \
+main contrib non-free >> /etc/apt/sources.list
+
+# echo deb-src http://ftp.debian.org/debian buster-updates \
+main contrib non-free >> /etc/apt/sources.list
+\end{lstlisting}
+
+\subsection{} Обновим список, и установим ряд приложений
+\begin{lstlisting}
+# apt-get update
+# apt-get install -y dialog sudo less i2c-tools evtest mc \
+openssh-server resolvconf hwinfo net-tools
+\end{lstlisting}
+
+\subsection{}Зададим пароль для root пользователя
+\begin{lstlisting}
+# passwd root
+\end{lstlisting}
+После чего введите root (внимание, курсор двигаться не будет, это политика безопасности Linux, при вводе пароля курсор не перемещается, что бы нельзя было установить количество символов). И нажмите Enter
+
+Затем Вас попросят повторить пароль, снова введите root и нажмите Enter

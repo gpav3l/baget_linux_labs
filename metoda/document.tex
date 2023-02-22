@@ -1,0 +1,55 @@
+\documentclass[a4paper, fontsize=14bp]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{scrextend}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage[russian]{babel}
+\usepackage{indentfirst}
+\usepackage{caption2}
+\usepackage{listings}
+\usepackage{color}   %May be necessary if you want to color links
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=false, %set true if you want colored links
+	linktoc=all,     %set to all if you want both sections and subsections linked
+	linkcolor=blue,  %choose some color if you want links to stand out
+}
+
+\usepackage[left=2.50cm, right=2.00cm, top=2.00cm, bottom=2.00cm]{geometry}
+\linespread{1.5}
+\lstset{basicstyle=\ttfamily\footnotesize,
+	frame=tb, 
+	aboveskip=3mm,
+	belowskip=3mm,
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
+\author{Павел Горбоконенко}
+\graphicspath{ {./images/} }
+\setcounter{tocdepth}{0}
+
+\begin{document}
+	\renewcommand{\figurename}{Рисунок}
+	\renewcommand{\captionlabeldelim}{.}
+	\renewcommand{\chaptername}{Лабораторная работа №}
+	\makeatletter
+	\renewcommand\subsection{\@startsection{subsection}{2}{\z@}
+		{-3.25ex\@plus -1ex \@minus -.2ex}%
+		{-1.5ex \@plus .2ex}%
+		{\normalfont\large\bfseries}}
+	\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}
+		{-3.25ex\@plus -1ex \@minus -.2ex}%
+		{-1.5ex \@plus .2ex}%
+		{\normalfont\normalsize\bfseries}}
+	\makeatother
+	
+	\rmfamily
+	\include{title}
+	\include{contents}
+	\include{introduction}
+	\include{lab_01}
+\end{document}
