@@ -1,4 +1,4 @@
-\documentclass[a4paper, fontsize=14bp]{report}
+\documentclass[a4paper,14pt]{extreport}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{scrextend}
@@ -20,17 +20,30 @@
 
 \usepackage[left=2.50cm, right=2.00cm, top=2.00cm, bottom=2.00cm]{geometry}
 \linespread{1.5}
-\lstset{basicstyle=\ttfamily\footnotesize,
+
+\lstdefinestyle{bash}{basicstyle=\ttfamily\footnotesize,
 	frame=tb, 
-	aboveskip=3mm,
-	belowskip=3mm,
+	aboveskip=5mm,
+	belowskip=2mm,
 	breaklines=true,
 	breakatwhitespace=true,
-	tabsize=3
-}
+	tabsize=3}
+
+\lstdefinestyle{stdout}{basicstyle=\ttfamily\footnotesize,
+	frame=single, 
+	aboveskip=5mm,
+	belowskip=2mm,
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3}
+
+
 \author{Павел Горбоконенко}
 \graphicspath{ {./images/} }
 \setcounter{tocdepth}{0}
+
+\newcommand{\ssubsection}[1]{%
+	\subsection[#1]{\normalsize\normalfont#1}}
 
 \begin{document}
 	\renewcommand{\figurename}{Рисунок}
@@ -40,7 +53,7 @@
 	\renewcommand\subsection{\@startsection{subsection}{2}{\z@}
 		{-3.25ex\@plus -1ex \@minus -.2ex}%
 		{-1.5ex \@plus .2ex}%
-		{\normalfont\large\bfseries}}
+		{\normalfont\normalsize\bfseries}}
 	\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}
 		{-3.25ex\@plus -1ex \@minus -.2ex}%
 		{-1.5ex \@plus .2ex}%
