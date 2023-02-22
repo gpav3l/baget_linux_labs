@@ -182,3 +182,189 @@ $ rmmod chardev
 \section{Правка дерева устройств (device-tree)}
 Мы успешно собрали модуль устройства, однако его сейчас никто не использует. Как говорилось выше, часто модули ядра являются драйвером, для взаимодействия с периферией (как внутрипроцессорной, типа интерфейса spi, так и внешней). Для описания взаимодействия между ядром я устройством служит специальная структура дерево устройств (device tree). В ней описывается основная информация о устройстве, а так же могут добавлять параметры, применяемые модулем ядра, при работе с тем или иным устройством. Среди прочего, дерево устройств поддерживает функцию перезаписи, что позволяет создавать мелкие файлы, вносящие исправление в существующее описание, или дополняющее его, в соответствии с требованиями конкретного проекта.
 
+\subsection{}Создадим рабочую папку в виртуальной машине для дополнения дерева устройств и перейдём в неё
+\begin{lstlisting}[style=bash]
+# mkdir $BAGET/lab_03/devtree
+# cd $BAGET/lab_03/devtree 
+\end{lstlisting}
+
+\subsection{}Создадим файл и откроем его для редактирования
+\begin{lstlisting}[style=bash]
+# kate of_mychard.dts
+\end{lstlisting}
+
+\subsection{}Запишите в файл следующие строки
+\begin{lstlisting}[style=stdout]
+/dts-v1/;
+
+/ {
+	fragment@0 {
+		target-path = "/";
+		__overlay__ {
+			
+			pdrv1 {
+				compatible = "srisa,platform-device";
+				status = "okay";
+			};
+		};
+	};
+};
+\end{lstlisting}
+
+\subsection{}Сохраните Ctrl+S и закройте редактор Ctrl+Q
+
+Мы создали дополнение, которое описывает виртуальное устройство, совместимое с драйвером, который мы создали ранее (обратите внимание на поле compatible в написанном фрагменте, и сравните его значение со значением одноименного параметра в исходном коде модуля). 
+
+\subsection{}Скомпилируем дополнение к дереву устройств, для этого выполним следующую команду
+\begin{lstlisting}[style=bash]
+# dtc -@ -O dtb -o ./of_mychard.dtb ./of_mychard.dts
+\end{lstlisting}
+
+\vspace{5mm}
+Если у Вас есть уже скомпилированное дерево устройств, Вы можете вернуть его в «человеческий вид» командой 
+\begin{lstlisting}[style=bash]
+# dtc --symbol -O dts -o ./out.dts ./source.dtb
+\end{lstlisting}
+
+\subsection{}Скопируйте полученный файл на плату
+\begin{lstlisting}[style=bash]
+# scp $BAGET/lab_03/devtree/of_mychard.dtb \
+netuser@192.168.100.200:/home/netuser/
+\end{lstlisting}
+
+\subsection{}Перейдите в терминал платы, и переместите скопированный файл в папку barebox
+\begin{lstlisting}[style=bash]
+$ mv /home/netuser/of_mychard.dtb /barebox/
+\end{lstlisting}
+
+\subsection{}Отредактируйте скрипт barebox.sh
+\begin{lstlisting}[style=bash]
+$ nano /barebox/barebox.sh
+\end{lstlisting}
+и впишите в него, после строки DTB=k5500vk018\_rbm.dtb
+\begin{lstlisting}[style=stdout]
+fdt_apply -i $DTB -l of_mychard.dtb -o /dtb && DTB=/dtb
+\end{lstlisting}
+Ctrl+S, Ctrl+X 
+
+\subsection{}Перезагрузите плату командой reboot
+
+\section{Проверка работы модуля}
+
+\subsection{}Войдите как пользователь root, и выполните команду lsmod.
+Модуль должен быть уже загружен, так как ядро при запуске должно было обнаружить в дереве устройств, совместимое с нашим модулем. 
+
+\subsection{}Посмотрим последние строки лога загрузки ядра
+\begin{lstlisting}[style=bash]
+$ dmesg | tail
+\end{lstlisting}
+Вы должны увидеть следующие строки в выводе
+\begin{lstlisting}[style=stdout]
+...
+[ 27.263923] srisa_pdrv: srisa_pdrv_init
+[ 27.266836] srisa_pdrv: pdrv_probe
+...
+\end{lstlisting}
+
+Строку с init мы видели ранее, но теперь после неё есть строка srisa-pdrv: pdrv\_probe, которая говорит нам, что наш модуль успешно связался с устройством описанным нами в дополнении к дереву устройств.
+
+\subsection{}Выполните команду ls /dev/* и обратите внимание, что должен появиться файл srisa\_pdrv.
+
+\subsection{}Отправим данные в srisa\_pdrv, и проверьте ответ
+\begin{lstlisting}[style=bash]
+$ echo 1234 > /dev/srisa_pdrv
+\end{lstlisting}
+\begin{lstlisting}[style=stdout]
+srisa_pdrv: srisa_pdrv_open
+srisa_pdrv: srisa_pdrv_ioctl
+srisa_pdrv: srisa_pdrv_write: Get 5 bytes
+srisa_pdrv: srisa_pdrv_release
+\end{lstlisting}
+Замечание: принято пять байт, так как последний байт это байт перевода каретки (\textbackslash{}r). 
+
+\subsection{}Посмотрим на скорость записи данных, для этого выполните команду:
+\begin{lstlisting}[style=bash]
+$ dd count=1 bs=1M if=/dev/zero of=/dev/srisa_pdrv 
+\end{lstlisting}
+Команда dd может часто встречаться Вам при активной работе с Linux. Она обеспечивает считывание, или копирование данных из одного файла в другой. В данном случае, мы указываем, что ходим один раз (count=1) отправить 1 мегабайт (bs=1M)  из файла /dev/zero (генератор 0) в наш драйвер. Чем больше мы отправим данных, тем точнее получим значение скорости, однако из-за особенностей реализации считывания в нашем драйвере, большой объём данных может привести к печальным последствиям, так что увлекаться не стоит. Результат должен быть таким
+\begin{lstlisting}[style=stdout]
+srisa_pdrv: srisa_pdrv_open
+srisa_pdrv: srisa_pdrv_write: Get 1048576 bytes
+srisa_pdrv: srisa_pdrv_release 
+1+0 records in
+1+0 records out
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.0318856 s, 32.9 MB/s
+\end{lstlisting}
+Последняя строка показывает сколько данных было передано, и на какой скорости. Результат может менятся от каждого запуска, но порядок величин должен быть одинаковый.
+
+\subsection{}Попробуем считать данные из драйвера, для этого выполним следующую команду: 
+\begin{lstlisting}[style=bash]
+$ dd count=1 bs=10 if=/dev/srisa_pdrv
+\end{lstlisting}
+Тут мы опять используем команду dd, но на этот раз не указываем выходной файл, поэтому сможем увидеть вывод в консоли
+\begin{lstlisting}[style=stdout]
+srisa_pdrv: srisa_pdrv_open 
+srisa_pdrv: srisa_pdrv_read: Send 10 bytes 
+ABCDEFGHIsrisa_pdrv: srisa_pdrv_release 
+1+0 records in 
+1+0 records out 
+10 bytes copied, 0.0131135 s, 0.8 kB/s
+\end{lstlisting}
+Как видите, в выводе мы увидели набор букв, который был сгенерирован нашим драйвером.  
+
+\subsection{}Измерим скорость чтения данных, но на этот раз перенаправим вывод в файл: 
+\begin{lstlisting}[style=bash]
+$ dd count=1 bs=1M if=/dev/srisa_pdrv of=/root/drv.out
+\end{lstlisting}
+\begin{lstlisting}[style=stdout]
+srisa_pdrv: srisa_pdrv_open 
+srisa_pdrv: srisa_pdrv_read: Send 1048576 bytes 
+srisa_pdrv: srisa_pdrv_release 
+1+0 records in 
+1+0 records out 
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.140926 s, 7.4 MB/s
+\end{lstlisting}
+Скорость на чтение меньше, чем на запись, так как драйвер в начале заполняет свой внутренний массив, и затем отправляет данные. Так же тормозит и запись файла. Проверьте это, заменив файл назначения на /dev/null Для просмотра вывода выполните команду cat /root/drv.out и немного подождём, пока через терминал будет передан 1 мегабайт алфавита. Вывод можно прервать комбинацией Ctrl+C
+
+\subsection{}Выгрузим ядро 
+\begin{lstlisting}[style=bash]
+$ rmmod chardev
+\end{lstlisting}
+И снова мы видим, что есть два вывода, один от модуля, который видели ранее, второй сообщает нам, что была выполнена функция по отключению от устройства.  
+
+\subsection{}Введите команду poweroff, дождитесь, пока не появиться надпись: reboot: System halt, после чего отключите USB кабель от ПК. 
+
+\section{Задание для закрепления}
+несите правку в модуль ядра, так, что бы командой считывания можно было получить данные, записанные через команду записи. Другими словами, пользователь два раза записал Hello после чего запросил на считывание 1Мбайт, в ответ он должен получить HelloHello.
+
+Замечание: тут нам понадобиться работа со структурой kfifo (в коде переменная data\_fifo). В коде уже вставлены части по её инициализации (mychar\_dev.c), всё что Вам остаётся, вписать в нужные места вызовы функций для считывания и записи данных. При этом функция copy\_from\_user и copy\_to\_user уже не нужны.
+
+Проверять работу лучше так, запись делать с помощью команды echo, а считывание через команду dd.
+
+Пример для записи данных в драйвере.
+\begin{lstlisting}[style=stdout]
+static ssize_t fifo_write(struct file *file, const char __user *buf, size_t count, loff_t *ppos)
+{
+	int ret;
+	unsigned int copied;
+	
+	ret = kfifo_from_user(&test, buf, count, &copied);
+	
+	return ret ? ret : copied;
+}
+\end{lstlisting}
+
+Пример для считывания данных из драйвера.
+\begin{lstlisting}[style=stdout]
+static ssize_t fifo_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+{
+	int ret;
+	unsigned int copied;
+	
+	ret = kfifo_to_user(&test, buf, count, &copied);
+	
+	return ret ? ret : copied;
+}
+\end{lstlisting}
+
+* Модифицировать код таким образом, что бы  можно было независимо обрабатывать два устройства (для проверки добавьте в device tree ещё одно устройство, pdrv2)
