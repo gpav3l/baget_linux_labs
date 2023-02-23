@@ -180,14 +180,14 @@ $ echo 0 > led1/brightness
 # cd $BAGET/lab_04/driver; code .
 \end{lstlisting}
 \begin{center}
-	\includegraphics[width=\textwidth]{pic_13}
+	\includegraphics[width=0.5\textwidth]{pic_13}
 \end{center}
 \textbf{Замечание:} При первом входе, Вас могут спросить, доверяете ли вы автору, нужно нажать на кнопку Yes,  
 
 
 \subsection{}Добавим путей для разрешения части include директив. Откройте .vscode -> c\_cpp\_properties.json
 \begin{center}
-	\includegraphics[width=\textwidth]{pic_14}
+	\includegraphics[width=0.5\textwidth]{pic_14}
 \end{center}
 
 \subsection{}Допишите в поле includePath следующие строки:\\
@@ -220,9 +220,10 @@ Ctrl+S для сохранения.
 \begin{lstlisting}[style=bash]
 # export BRD_PASS="usrnetuser" 
 \end{lstlisting}
-и скопируйте модуль на плату
+
+\subsection{}Скопируйте модуль на плату
 \begin{lstlisting}[style=bash]
-# ARCH=mips CROSS_COMPILE=mips64el-linux-gnuabi64- make install
+	# ARCH=mips CROSS_COMPILE=mips64el-linux-gnuabi64- make install
 \end{lstlisting}
 Замечание: попробуйте сами разобратся, как в Makefile описан процес копирования файла на плату. Это может Вам помочь, при выполнении самостоятельных работ.
 
