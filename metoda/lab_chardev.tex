@@ -13,14 +13,13 @@
 	\item \href{https://www.digi.com/resources/examples-guides/use-device-tree-overlays-to-patch-your-device-tree}{DiGi: Use Device Tree Overlays to Patch Your Device Tree}.
 \end{itemize}
 
+В пространстве ядра работает, как не удивительно, само ядро ОС, а так же его модули (которые могут быть встроены в основное ядро, или могут быть представлены файлами в rootfs с расширением ko).
+
+Пользовательские приложения и библиотеки работают в пользовательском пространстве. 
 
 \begin{center}
 	\includegraphics[width=0.6\textwidth]{pic_12}
 \end{center}
-
-В пространстве ядра работает, как не удивительно, само ядро ОС, а так же его модули (которые могут быть встроены в основное ядро, или могут быть представлены файлами в rootfs с расширением ko).
-
-Пользовательские приложения и библиотеки работают в пользовательском пространстве. 
 
 Ядро ОС Linux умеет работать с подгружаемыми модулями (если эта опция была активирована при сборке ядра). В качестве отдельных модулей могут выступать как определённые сервисы, предоставляемые ядром, так и драйверы устройств.
 
@@ -59,12 +58,12 @@
 \textbf{Замечание:} При первом входе, Вас могут спросить, доверяете ли вы автору, нужно нажать на кнопку Yes,  
 
 \begin{center}
-	\includegraphics[width=0.6\textwidth]{pic_13}
+	\includegraphics[width=0.5\textwidth]{pic_13}
 \end{center}
 
 \subsection{}Добавим путей для разрешения части include директив. Откройте .vscode -> c\_cpp\_properties.json
 \begin{center}
-	\includegraphics[width=0.6\textwidth]{pic_14}
+	\includegraphics[width=0.5\textwidth]{pic_14}
 \end{center}
 
 \subsection{}Допишите в поле includePath следующие строки:\\
