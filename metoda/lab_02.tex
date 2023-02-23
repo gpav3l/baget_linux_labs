@@ -167,7 +167,15 @@ $ watch -n 1 cat gpio486/value
 
 \subsection{}Остановите работу программы watch комбинацией клавиш \\ Ctrl + C
 
-\subsection{}Введите команду poweroff, дождитесь, пока не появиться надпись: reboot: System halt, после чего отключите USB кабель от ПК. 
+\subsection{} Выключите плату, для чего в начале введите команду
+\begin{lstlisting}[style=bash]
+	$ poweroff
+\end{lstlisting}
+дождитесь, как появиться надпись
+\begin{lstlisting}[style=stdout]
+	reboot: System halt
+\end{lstlisting}
+после чего отключите USB кабель от ПК или платы. 
 
 \section{Задание для закрепления}
 Экспортируйте все выводы банков F и E, и включите все светодиоды.

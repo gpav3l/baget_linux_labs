@@ -226,6 +226,16 @@ $ insmod /home/netuser/spi_temp.ko
 $ rmmod spi_temp
 \end{lstlisting}
 
+\subsection{} Выключите плату, для чего в начале введите команду
+\begin{lstlisting}[style=bash]
+	$ poweroff
+\end{lstlisting}
+дождитесь, как появиться надпись
+\begin{lstlisting}[style=stdout]
+	reboot: System halt
+\end{lstlisting}
+после чего отключите USB кабель от ПК или платы. 
+
 \section{Задание для закрепления}
 Внесите изменения в текущий драйвер таким образом, что бы создавался файл в папке /dev, чтение которого давало бы текущее значение освещённости.
 
