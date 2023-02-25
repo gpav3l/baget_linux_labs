@@ -1,5 +1,4 @@
 \documentclass[a4paper,14pt]{extreport}
-%\usepackage[T2A]{fontenc}
 \usepackage{cmap}
 \usepackage[utf8]{inputenc}
 \usepackage{scrextend}
@@ -41,7 +40,18 @@
 
 \author{Павел Горбоконенко}
 \graphicspath{ {./images/} }
-\setcounter{tocdepth}{0}
+\setcounter{tocdepth}{1} % set content level 1 - mena chapters and sections
+
+% Notes declaration
+\newcommand*{\ReferenceTitle}[1]{\textcolor{black}{\textbf{#1}}\ignorespaces}%
+\newenvironment{Notes}[1]{%
+	\medskip\par\noindent\ReferenceTitle{#1}%
+	\par\noindent\itshape% Add your font specification for the body here.
+	\begin{quote}%
+	}{%
+	\end{quote}%
+	\par\noindent\ignorespacesafterend%
+}%
 
 
 \begin{document}
@@ -56,7 +66,7 @@
 	\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}
 		{-3.25ex\@plus -1ex \@minus -.2ex}%
 		{-1.5ex \@plus .2ex}%
-		{\normalfont\normalsize\bfseries}}
+		{\normalfont\normalsize\bfseries\color{black}}}
 	\makeatother
 	
 	\rmfamily
