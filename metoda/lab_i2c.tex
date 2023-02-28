@@ -4,7 +4,7 @@
 \vspace{5mm}
 \textbf{Описание:}Работа с I2C интерфейсом не требует разработки модуля ядра, при условии, что внешний модуль не требует дополнительных управляющих линий. В ОС Linux есть набор программных продуктов, позволяющих сканировать (i2cdetect) подключённые модули, с целью определения адресов устройств на шине, а так же для контроля исправности. Так же модули позволяющие отправлять (i2c\_set) и принимать (i2c\_get) данные .
 
-В данной работе, будет приведён пример приложения, обеспечивающего настройку и взаимодействие с внешним модулем. 
+В данной работе, будет приведён пример приложения, обеспечивающего настройку и взаимодействие с внешним модулем GY-87 предсталяющем собой навигационный модуль с 10-ю степенями свободы (3-х осевой гироскоп и 3-х осевой акселерометр MPU6050, 3-х осевой датчик магнитного поля HMC5883L и барометр BMP180). 
 
 \vspace{5mm}
 \textbf{Полезные ссылки:}
@@ -12,6 +12,13 @@
 	\item \href{http://www.gaw.ru/html.cgi/txt/interface/iic/start.htm}{Последовательный интерфейс I2C}.
 	\item \href{https://docs.kernel.org/devicetree/dynamic-resolution-notes.html}{Kernel Doc: Devicetree Dynamic Resolver Notes}
 	\item \href{https://www.kernel.org/doc/html/v4.15/driver-api/i2c.html}{Kernel Doc: I2C API}	
+	\item \href{https://hadex.cz/spec/m442d.pdf}{описание модуля GY-87}
+	\item \href{https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Datasheet1.pdf}{TDK MPU6050: описание}
+	\item \href{https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Register-Map1.pdf}{TDK MPU6050: конфигурационный регистры}
+	\item \href{https://cdn-shop.adafruit.com/datasheets/HMC5883L_3-Axis_Digital_Compass_IC.pdf}{Honeywell HMC5883L: описание}
+	\item \href{https://cdn-shop.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf}{Bosch BMP180: описание}
+	
+	
 \end{itemize}
 
 \section{Запуск и подключение к устройству}

@@ -2,7 +2,9 @@
 \textbf{Цель:} Активировать SPI контроллер, и написать простой драйвер для устройства подключённого к SPI интерфейсу.
 
 \vspace{5mm}
-\textbf{Описание:}В данной работе, познакомимся со структурой ядра, позволяющей взаимодействовать с spi контроллером целевой платы. Данная структура является программным интерфейсом, позволяющим отвязать реализацию взаимодействия с внешним аппаратным модулем по интерфейсу SPI от особенностей реализации SPI контроллера на конкретной аппаратной платформе. 
+\textbf{Описание:}В данной работе, познакомимся со структурой ядра, позволяющей взаимодействовать с spi контроллером целевой платы. Данная структура является программным интерфейсом, позволяющим отвязать реализацию взаимодействия с внешним аппаратным модулем по интерфейсу SPI от особенностей реализации SPI контроллера на конкретной аппаратной платформе.
+
+Проверку работы SPI интерфейса будет проводится при помощи PMOD модуля компании Digilent PmodALS представлюйшей собой датчик освещённости, на базе микросхемы TEMT6000X01 подключенный к АЦП ADC081S021.
 
 \vspace{5mm}
 \textbf{Полезные ссылки:}
@@ -10,7 +12,11 @@
 	\item \href{http://www.gaw.ru/html.cgi/txt/interface/spi/index.htm}{Последовательный интерфейс SPI}.
 	\item \href{https://docs.kernel.org/devicetree/dynamic-resolution-notes.html}{Kernel Doc: Devicetree Dynamic Resolver Notes}
 	\item \href{https://www.kernel.org/doc/html/v4.15/driver-api/spi.html}{Kernel Doc: SPI API}	
+	\item \href{https://digilent.com/reference/pmod/pmodals/start}{Digilent: PmodALS}
+	\item \href{https://www.vishay.com/docs/81579/temt6000.pdf}{Vishay Semiconductor's TEMT6000X01}
+	\item \href{https://datasheetspdf.com/pdf-file/1407102/etcTI/ADC081S021/1}{Texas Instruments ADC081S021}
 \end{itemize}
+
 
 \section{Запуск и подключение к устройству}
 
