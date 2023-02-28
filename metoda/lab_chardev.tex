@@ -40,6 +40,12 @@
 
 \subsection{}Откройте консоль комбинацией клавиш Ctrl+Alt+T
 
+\subsection{}Добавьте ключи в ssh-agent
+\begin{lstlisting}[style=bash]
+# ssh-add
+\end{lstlisting}
+Впишите фразу заданую в пункте \ref{ssh:passphrase}
+
 \subsection{}Создайте рабочий каталог
 \begin{lstlisting}[style=bash]
 # mkdir -p $BAGET/lab_03 
@@ -148,7 +154,7 @@ kernel/fs/mbcache.ko
 # scp $BAGET/lab_03/mychar/chardev.ko \
 netuser@192.168.100.200:/home/netuser/
 \end{lstlisting}
-пароль - usrnetuser
+
 
 \subsection{}Вернитесь в терминал платы, и переместите модуль ядра в системную папку
 \begin{lstlisting}[style=bash]

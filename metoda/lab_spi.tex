@@ -18,6 +18,12 @@
 
 \subsection{}Подключите по USB плату к ПК. Проверьте, и при необходимости подключите USB устройство FTDI RBM\_C1K5500VK018 к виртуальной машине (меню Device→USB).
 
+\subsection{}Добавьте ключи в ssh-agent
+\begin{lstlisting}[style=bash]
+	# ssh-add
+\end{lstlisting}
+Впишите фразу заданую в пункте \ref{ssh:passphrase}
+
 \subsection{}Откройте программу gtkterm, и подключитесь к порту /dev/ttyUSB1
 
 \subsection{}Если в окне терминала нет текста, нажмите клавишу Enter на клавиатуре. Вы должны увидеть следующий вывод:
@@ -194,16 +200,16 @@ $ ls /sys/class/spi_master/
 
 \subsection{}Проверьте значение системной переменной BRD\_PASS  
 \begin{lstlisting}[style=bash]
-	# echo $BRD_PASS
+# echo $BRD_PASS
 \end{lstlisting}
 если вывод был пустой, проинициализируйте переменную 
 \begin{lstlisting}[style=bash]
-	# export BRD_PASS="usrnetuser" 
+# export BRD_PASS="usrnetuser" 
 \end{lstlisting}
 
 \subsection{}Скопируйте модуль на плату
 \begin{lstlisting}[style=bash]
-	# ARCH=mips CROSS_COMPILE=mips64el-linux-gnuabi64- make install
+# ARCH=mips CROSS_COMPILE=mips64el-linux-gnuabi64- make install
 \end{lstlisting}
 
 \subsection{}Подключите модуль PmodALS как показано на рисунке 
