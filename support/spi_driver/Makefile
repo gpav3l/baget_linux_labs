@@ -13,7 +13,7 @@ all:
 	$(MAKE) -C $(KERNEL_SRC) M=$(SRC)/
 
 install: all
-	sshpass -p $(BRD_PASS) scp ./spi_temp.ko $(BRD_USER)@$(BRD_IP):$(BRD_DIR)
+	scp ./spi_temp.ko $(BRD_USER)@$(BRD_IP):$(BRD_DIR)
 	
 clean:
 	rm -f *.o *~ core .depend .*.cmd *.ko *.mod.c
