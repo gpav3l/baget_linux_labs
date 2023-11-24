@@ -7,6 +7,10 @@ if [ "$EUID" -ne 0 ]; then
 	exit 0
 fi
 
+useradd -d /home/student -p usrstudent student
+
+echo "export BAGET=/home/student/training" | tee -a /home/studnet/.bashrc
+
 usermod -a -G dialout student
 usermod -a -G vboxsf student
 

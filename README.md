@@ -4,7 +4,7 @@ Files for laboratory work on Baget-PLK with Linux Debian 10
 
 # Prepare environment
 
-Need create Virtual machine with some additional softwares. Except Kubuntu 22.04 LTS, with additionay installedt utils:
+Need create Virtual machine with some additional softwares. All labs and script make for Kubuntu 22.04 LTS, with additionay installedt utils:
 
 * VSCode
 * device-tree-compiler
@@ -15,6 +15,8 @@ Need create Virtual machine with some additional softwares. Except Kubuntu 22.04
 * mips64el-linux-gnu-g++
 
 Also need add initialization of BAGET env in bashrc file with value of path to /home/student/baget/
+
+You can use vm_config.sh script to config OS after installation.
 
 # UPD
 
