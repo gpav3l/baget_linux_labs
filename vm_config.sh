@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Set root password and switch to it
 if [ "$EUID" -ne 0 ]; then
 	echo "Script must be run by root"
@@ -7,14 +9,15 @@ if [ "$EUID" -ne 0 ]; then
 	exit 0
 fi
 
-useradd -m -r -s /usr/bin/bash -G dialout,vboxsf,student student
-echo student:usrstudent | chpasswd
+groupadd student
+useradd -m -s /usr/bin/bash -g student -G dialout,vboxsf student
+echo student:usrstudent | chpasswd -c SHA512
 
-echo "export BAGET=/home/student/baget" | tee -a /home/studnet/.bashrc
+echo "export BAGET=/home/student/baget" | tee -a /etc/bash.bashrc
 # Copy support folder to work directory
 mkdir -p /home/student/baget
 cp -r ./support /home/student/baget
-chown -R student:studnet /home/student/baget
+chown -R student:student /home/student/baget
 
 apt update
 apt upgrade -y
@@ -45,8 +48,7 @@ apt update
 apt install code
 
 # Install Eclipse
-cd /tmp
-su student
-wget https://ftp.fau.de/eclipse/oomph/epp/2022-06/R/eclipse-inst-jre-linux64.tar.gz
-tar -xzf eclipse-inst-jre-linux64.tar.gz
-./eclipse-installer/eclipse-inst
+# cd /tmp
+# runuser -l student -c "wget https://ftp.fau.de/eclipse/oomph/epp/2022-06/R/eclipse-inst-jre-linux64.tar.gz"
+# runuser -l student -c "tar -xzf eclipse-inst-jre-linux64.tar.gz"
+# runuser -l student -c "./eclipse-installer/eclipse-inst"

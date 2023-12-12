@@ -16,7 +16,8 @@ Need create Virtual machine with some additional softwares. All labs and script 
 
 Also need add initialization of BAGET env in bashrc file with value of path to /home/student/baget/
 
-You can use vm_config.sh script to config OS after installation.
+You can use vm_config.sh script to config OS after installation (Need insert disk from Devices->Insert Guest Additional... after that `sudo ./VBoxLinuxAdditions.run` from guest OS, and reboot).
+
 
 # UPD
 
