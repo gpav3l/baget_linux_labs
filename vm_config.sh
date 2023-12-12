@@ -7,12 +7,14 @@ if [ "$EUID" -ne 0 ]; then
 	exit 0
 fi
 
-useradd -d /home/student -p usrstudent student
+useradd -m -r -s /usr/bin/bash -G dialout,vboxsf,student student
+echo student:usrstudent | chpasswd
 
-echo "export BAGET=/home/student/training" | tee -a /home/studnet/.bashrc
-
-usermod -a -G dialout student
-usermod -a -G vboxsf student
+echo "export BAGET=/home/student/baget" | tee -a /home/studnet/.bashrc
+# Copy support folder to work directory
+mkdir -p /home/student/baget
+cp -r ./support /home/student/baget
+chown -R student:studnet /home/student/baget
 
 apt update
 apt upgrade -y
