@@ -9,9 +9,9 @@ if [ "$EUID" -ne 0 ]; then
 	exit 0
 fi
 
-groupadd student
-useradd -m -s /usr/bin/bash -g student -G dialout,vboxsf student
-echo student:usrstudent | chpasswd -c SHA512
+# groupadd student
+# useradd -m -s /usr/bin/bash -g student -G dialout,vboxsf,sudo student
+# echo student:usrstudent | chpasswd -c SHA512
 
 echo "export BAGET=/home/student/baget" | tee -a /etc/bash.bashrc
 # Copy support folder to work directory
