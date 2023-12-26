@@ -171,7 +171,11 @@ auto eth0
 
 \subsection{}Подключите USB шнуром плату к ПК. Проверьте, и при необходимости подключите USB устройство FTDI RBM\_C1K5500VK018 к виртуальной машине (меню Device→USB).
 
-\subsection{} Запустите программу gtkterm или нажмите Ctrl+Shift+T для открытия новой вкладки в окне терминала и выполните команду minicom (это консольная утилита, в виртуальной машине эта утилита уже настроена на нужный порт, с нужными параметрами)
+\subsection{} Запустите программу gtkterm или нажмите Ctrl+Shift+T для открытия новой вкладки в окне терминала и выполните команду 
+
+\begin{lstlisting}[style=bash]
+	# minicom -D/dev/ttyUSB1
+\end{lstlisting}
 \begin{center}
 	\includegraphics[width=\textwidth]{pic_06}
 \end{center}

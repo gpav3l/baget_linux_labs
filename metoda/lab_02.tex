@@ -35,14 +35,16 @@
 
 \subsection{}Проверьте текущие настройки интерфейса eth0 выполнив команду: 
 \begin{lstlisting}[style=bash]
-$ ip addr show dev eth0 
+$ ip -4 addr show dev eth0 
 \end{lstlisting}
-убедитесь, что в выдаче появилась строчка: 
+Проверьте результат, IP адрес платы должен быть 192.168.100.200
 \begin{lstlisting}[style=stdout]
 	...
-inet 192.168.100.200/24 scope global eth0 
+inet 192.168.100.200/24 brd ... scope global eth0 
 	...
 \end{lstlisting}
+Результат отображает информацию по выбранному интерфейсу, в данном случае интерес представляет адрес указанный после слова inet. Это IP адрес, который присвоен плате.
+ 
 Если inet адрес отличается, то удалите текущий адрес (вместо <inet\_val> впишите адрес, который отобразился в консоли)
 \begin{lstlisting}[style=bash]
 $ ip addr del <inet_val> dev eth0

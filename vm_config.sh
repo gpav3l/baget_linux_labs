@@ -13,6 +13,9 @@ fi
 # useradd -m -s /usr/bin/bash -g student -G dialout,vboxsf,sudo student
 # echo student:usrstudent | chpasswd -c SHA512
 
+sudo usermod -a -G dialout student
+sudo usermod -a -G vboxsf student
+
 echo "export BAGET=/home/student/baget" | tee -a /etc/bash.bashrc
 # Copy support folder to work directory
 mkdir -p /home/student/baget
@@ -34,7 +37,8 @@ fakeroot \
 fakechroot \
 debootstrap \
 gparted \
-qemu-user-static
+qemu-user-static \
+minicom
 
 # Install VS code
 apt-get install wget gpg
