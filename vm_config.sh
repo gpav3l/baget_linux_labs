@@ -51,6 +51,9 @@ apt install apt-transport-https
 apt update
 apt install code
 
+code --install-extension ms-vscode.cpptools
+code --install-extension ms-vscode.cpptools-extension-pack
+
 # Install Eclipse
 # cd /tmp
 # runuser -l student -c "wget https://ftp.fau.de/eclipse/oomph/epp/2022-06/R/eclipse-inst-jre-linux64.tar.gz"
