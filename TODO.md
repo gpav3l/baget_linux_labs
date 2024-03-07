@@ -17,7 +17,3 @@ busybox от debian (со штатной libc, либо статический �
 ## Lab 02
 
 Use libgpiod (https://devdotnet.org/post/rabota-s-gpio-v-linux-chast-6-biblioteka-libgpiod/)
-
-# Lab 03 and other
-
-vscode нужную папку, и если c_cpp..... не создался, жмём Shift+Ctrl+P, и выбираем С/C++ Edit Configurations (JSON)
