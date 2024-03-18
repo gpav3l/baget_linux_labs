@@ -7,14 +7,15 @@ function btn_click(gpio) {
     var val;
     if(document.getElementById(gpio).style.background == "red") {
         document.getElementById(gpio).style.background = "green";
-        val = 0;
+        val = 1;
     } else {
         document.getElementById(gpio).style.background = "red";
-        val = 1;    
+        val = 0;
     }
+    args = "?gpio=" + gpio + "&val=" + val
     init_request = new XMLHttpRequest();
-    init_request.open("GET", './cgi-bin/leds.py');
-    init_request.send("gpio=" + gpio + "&val=" + val);    
+    init_request.open("GET", './cgi-bin/leds.py' + args);
+    init_request.send();
 };
 
 /**
