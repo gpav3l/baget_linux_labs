@@ -1,0 +1,202 @@
+\setcounter{chapter}{0}
+\renewcommand{\chaptername}{Приложение }
+\renewcommand{\thechapter}{\Alph{chapter}}
+\chapter{Установка и настройка виртуальной машины}
+
+В данном пособие используется гипервизор Oracle VirtualBox настроенный для работы с отладочной платой. В данном разделе рассмотрим настройку рабочего окружения, необходимого для выполнения работ.
+
+\section{Настройка гипервизора}
+
+\subsection*{}Необходимо скачать с сайта \href{https://www.virtualbox.org}{https://www.virtualbox.org} следующие пакеты:
+
+\begin{enumerate}
+	\item VirtualBox Platform Packages - установочный пакет гипервизора.
+	\item VirtualBox Extension Pack - расширения для гипервизора, позволяющие в том числе использовать USB интерфейсы хоста из гостевой операционной системы.	
+\end{enumerate}
+
+Запустите установку гипервизора. По завершению установки, запустите гипервизор.
+В открывшемся окне, выберите File -> Tools -> Extension Pack Manager.
+\begin{figure}[hbt!]
+	\centering\includegraphics[width=\textwidth]{vm_install_01}
+	\caption{Окно установки расширений}
+	\label{fig:vm_01}
+\end{figure} 
+
+Нажмите, на кнопку Install. В открывшемся диалоговом окне выберите файл расширения для гипервизора (файл с расширением vbox-extpack), и нажмите на кнопку Open.
+
+\section{Установка гостевой машины}
+\subsection{}Необходимо скачать установочный образ Kubuntu 24.10 с сайта \href{https://kubuntu.org/getkubuntu/}{https://kubuntu.org/getkubuntu/}
+
+\subsection{}Запустить гипервизор Oracle VirtualBox, если закрыли его ранее.
+
+\subsection{}В окне гипервизора выберите Machine -> New.
+
+	\begin{figure}[hbt!]
+	 	\centering\includegraphics[width=\textwidth]{vm_install_02}
+	 	\caption{Окно создания новой гостевой машины}
+	 	\label{fig:vm_02}
+	\end{figure} 
+	
+Нажмите на кнопку Expert Mode (рисунок \ref{fig:vm_02}), для перехода в расширенный режим конфигурации.
+
+\subsection{Вкладка Name and Operation System.}
+\begin{enumerate}
+	\item Name - Название для виртуальной машины BagetWS\_kubuntu24.
+	\item Folder - родительская папка в которой будет создана виртуальная машина (в данном папке появиться вложенная папка с именем виртуальной машины).
+	\item ISO Image - путь к образу диска с установочными файлами операционной системы, скаченный ранее. 
+	\item Skip Unattended Installation - данный пункт должен быть отмечен.
+\end{enumerate}
+
+\subsection{Вкладка Hardware.} 
+\begin{enumerate}
+	\item Base Memory - выбор доступной для гостевой машины объёма оперативной памяти, выберите не менее 16384 MB, если данное количество попадает в красную зону, то следует расширить объём оперативной памяти рабочего компьютера, или выбрать другой компьютер. 
+	\item Processor - выбор количества потоков доступных для гостевой машины, выберите не менее 4, если данное количество попадает в красную зону, то следует выбрать другой компьютер.
+\end{enumerate}
+Остальные поля данной вкладки нужно оставить без изменения.
+
+\subsection{Вкладка Hard Disk.} 
+	Выберите Create a Virtual Hard Disk Now, и укажите объём не менее 50GB.
+
+	Остальные поля данной вкладки нужно оставить без изменения.
+
+\subsection{} 
+
+Нажмите кнопку Finish, и в окне гипервизора запустите виртуальную машину двойным нажатием левой кнопки мыши на иконке. Дождитесь появление окна как на рисунке \ref{fig:vm_03}.
+
+При этом необходимо, что бы рабочий компьютер имел доступ к сети интернет.
+
+\begin{figure}[hbt!]
+	\centering\includegraphics[width=\textwidth]{vm_install_03}
+	\caption{Окно выбора действия}
+	\label{fig:vm_03}
+\end{figure} 
+
+\subsection{}Нажмите на кнопку Install Kubuntu. И далее нажимайте на кнопку Next пока не дойдёте до раздела Partitions. В данном разделе выберите Erase disk, после чего нажмите кнопку Next.
+
+\subsection{}Во кладке Users введите
+\begin{enumerate}
+	\item Your name и login - student
+	\item Computer Name - bagetws
+	\item Password и Repeat Password - usrstudent
+	\item Включите опцию Log in automatically without asking for the password 
+\end{enumerate}
+
+\subsection{}Нажмите кнопку Next, затем кнопку Install. Подтвердите ещё раз начало установки.
+Дождитесь окончания установки.
+
+\subsection{}Убедитесь, что опция Restart now отмечена, и нажмите кнопку Done.
+
+\subsection{} Закройте окно гостевой машины.
+
+\subsection{} В окне гипервизора выберите виртуальную машину, и нажмите на кнопку Settings.
+\begin{figure}[hbt!]
+	\centering\includegraphics[width=\textwidth]{vm_install_04}
+	\caption{Иконка настройки гостевой машины}
+	\label{fig:vm_04}
+\end{figure} 
+
+\subsection{}Добавить про сетевой адаптер
+
+\subsection{}Закройте окно настройки.
+
+\section{Настройка гостевой машины}
+\subsection{}Запустите гостевую машину. После окончания загрузки, нажмите на иконку \includegraphics{kubuntu_start} в левом нижнем углу, выберите вкладку Favorites и справа, из списка приложений выберите программу терминал Konsole (так же это приложение можно открыть с помощью комбинации клавиш Ctrl + Alt + T).
+
+\subsection{}В открывшемся терминале вбейте следующую команду:
+\begin{lstlisting}[style=bash]
+	# sudo apt update && sudo apt upgrade -y
+	
+	# kwriteconfig5 --file kwalletrc  --group 'Wallet' \
+	--key 'Enabled' 'false'
+\end{lstlisting}
+
+\subsection{}Добавим расширения для взаимодействия между гостевой машиной и хостом.
+\begin{lstlisting}[style=bash]
+	# sudo apt install build-essential dkms -y
+	
+	# sudo apt install virtualbox-guest-additions-iso -y
+	
+	# sudo mount /usr/share/virtualbox/VBoxGuestAdditions.iso /mnt
+	
+	# sudo /mnt/VBoxLinuxAdditions.run
+\end{lstlisting}
+
+После чего нужно перезагрузить гостевую машину:
+\begin{lstlisting}[style=bash]
+	# sudo shutdown -r now
+\end{lstlisting}
+
+mips64el-linux-gnu-gcc (C компилятор) и mips64el-linux-gnu-g++ (C++ компилятор), компилятор дерева устройств device-tree-compiler, архив с заголовочными файлами ядра Linux установленного на плате, утилита debootstrap, IDE VSCode и прочие полезные инструменты. 
+
+
+\subsection{} Установите дополнительные пакеты
+  
+\begin{lstlisting}[style=bash]
+	# sudo apt install -y gcc-mips64el-linux-gnuabi64 \
+	g++-mips64el-linux-gnuabi64 qemu-system-mips64el \
+	qemu-user-static gdb-multiarch
+	
+	# sudo apt install -y git device-tree-compiler debootstrap
+\end{lstlisting}
+
+\subsection{} Склонируйте репозиторий с файлами для лабораторных работ.
+
+\begin{lstlisting}[style=bash]
+	# git clone -n --depth=1 --filter=tree:0 \ https://github.com/gpav3l/baget_linux_labs /home/student/baget/
+	
+	# cd /home/student/baget
+	
+	# git sparse-checkout set --no-cone /support
+	
+	# git checkout
+\end{lstlisting}
+
+\subsection{} Установите VSCode и необходимые расширения.
+\begin{lstlisting}[style=bash]
+	# sudo snap install --classic code
+	
+	# code --install-extension ms-vscode.cpptools
+	
+	# code --install-extension ms-vscode.cpptools-extension-pack
+	
+	# code --install-extension ms-vscode.makefile-tools	 
+\end{lstlisting}
+
+\subsection{} Добавьте переменные среды. Для этого откройте файл bashrc
+
+\begin{lstlisting}[style=bash]
+	# nano /home/student/.bashrc
+\end{lstlisting}
+В начало файла нужно добавить следующею строку:
+\begin{lstlisting}
+	BAGET="/home/student/baget"
+\end{lstlisting}
+
+\subsection{} Настройте автоматическое монтирование для USB устройств.
+Для этого откройте программу Settings \includegraphics{vm_install_05}.
+
+В открывшемся окне (рисунок \ref{fig:vm_06}), в строке поиска вбейте Remov, и выберите ниже пункт Removable Devices. Отметьте пункты, как показано на рисунке \ref{fig:vm_06}. 
+
+\begin{figure}[hbt!]
+	\centering\includegraphics[width=\textwidth]{vm_install_06}
+	\caption{Подключение автоматического монтирования устройств}
+	\label{fig:vm_06}
+\end{figure} 
+
+Нажмите кнопку Apply.
+
+\subsection{} Установите дополнительные программы
+\begin{lstlisting}
+	sudo apt install -y gtkterm minicom
+\end{lstlisting}
+
+\subsection{} Добавьте программы в Избранное, для простоты их поиска.
+Нажмите на иконку \includegraphics{kubuntu_start} в левом нижнем углу, и в поле search введите terminal. Нажмите правой кнопкой на программе Serial port terminal и выберите пункт Add to Favorites.
+
+Повторите тоже самое для VSCode, для чего в поле поиска нужно вписать слово code, и найти Visual Studio Code.
+
+\subsection{}Добавьте пользователя student в группу dialout, что бы можно было подключаться к последовательному порту без прав администратора.
+\begin{lstlisting}
+	sudo usermod student -aG dialout
+\end{lstlisting}
+

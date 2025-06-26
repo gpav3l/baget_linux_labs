@@ -1,10 +1,10 @@
 \chapter{Установка ОС}
-\textbf{Цель:} Установить дистрибутив Debian 10 на целевую платформу.
+\textbf{Цель:} Установить дистрибутив Debian 12 на целевую платформу.
 
 \vspace{5mm}
-\textbf{Описание:} Нужно понимать, что ОС Linux делится на две части. Ядро (Kernel) и файловую систему (rootfs). Ядро определяет какие возможности по взаимодействию с железом доступны пользователю и приложениям. Rootfs определяет какие инструменты есть в системе, порядок инициализации, запуска сервисов и прочие прикладные штуки. Дистрибутив это в большей степени наполнение rootfs. Не каждый дистрибутив имеет поддержку иной от x86 архитектур.
+\textbf{Описание:} ОС Linux делится на две части: ядро (Kernel) и файловую систему (rootfs). Ядро определяет какие возможности по взаимодействию с железом доступны пользователю и приложениям. Rootfs определяет какие инструменты есть в системе, содержит скрипты отвечающие за очередность инициализации, запуска сервисов и прочие прикладные вещи. Дистрибутив это в большей степени наполнение rootfs. Не каждый дистрибутив имеет поддержку иной от x86 архитектур.
 
-Для установки debian воспользуемся инструментом под названием debootstrap, который отвечает за создание rootfs. Подробнее про этот инструмент, и возможности по его управлению, Вы можете найти на wiki проекта Debian.
+Для установки debian воспользуемся инструментом под названием debootstrap, который отвечает за создание rootfs. Подробнее про этот инструмент, и возможности по его управлению, можно найти на wiki проекта Debian (\href{https://wiki.debian.org/ru/Debootstrap}{https://wiki.debian.org/ru/Debootstrap}).
 
 
 \section{Подготовка rootfs}
@@ -14,9 +14,9 @@
 \subsection{} При помощи комбинации клавиш на клавиатуре Ctrl+Alt+T откройте консоль.
 
 \vspace{5mm}
-\textbf{Внимание!} В консоли есть возможность автоматического продолжения ввода. Для этого необходимо ввести первые символы команды или пути, и нажать клавишу TAB. Ввод продолжиться до тех пор, пока не появиться неопределённостью (к примеру есть два файла foo\_bar1 и foo\_bar2, при нажатии TAB будет вставлен текст до цифры). Двойное нажатие TAB приведёт к выводу всех возможных вариантов продолжения, если таковые есть.
+\textbf{Внимание!} В консоли есть возможность автоматического продолжения ввода. Для этого необходимо ввести первые символы команды или пути, и нажать клавишу TAB. Ввод продолжиться до тех пор, пока не появиться неопределённость (к примеру есть два файла foo\_bar1 и foo\_bar2, при нажатии TAB будет вставлен текст до цифры). Двойное нажатие TAB приведёт к выводу всех возможных вариантов продолжения, если таковые есть.
 
-\subsection{}Создайте и перейдти в рабочий каталог в котором будет создан образ rootfs.
+\subsection{}Создайте и перейдите в рабочий каталог для создания образа rootfs.
 \begin{lstlisting}[style=bash]
 # mkdir -p $BAGET/lab_01
 # cd $BAGET/lab_01 
@@ -26,19 +26,23 @@
 \begin{lstlisting}[style=bash]
 # sudo debootstrap --include=aptitude,nano,wget \
 --foreign \
---arch=mips64el buster rootfs
+--arch=mips64el bookworm rootfs
 \end{lstlisting}
 \textit{-{}-include=A,B,C..} - добавить в сборку указанные пакеты (перечисление должно быть без пробелов после запятых!)\\
 \textit{-{}-foreign} — только сгенерировать наполнение, применяется когда архитектура на которой запускается утилита отлична от архитектуры назначения. \\
 \textit{-{}-arch=mips64el} — указываем целевую архитектуру \\
-\textit{buster} — версия сборки \\
+\textit{bookworm} — версия сборки (в данном случае 12) \\
 \textit{rootfs} — путь к папке назначения, где будут размещены файлы \\
 
-\subsection{} Для продолжения установки, понадобиться утилита qemu позволяющая эмулировать различные архитектуры. Скопируем исполняемый файл qemu:
+\begin{Notes}{Замечание:}
+	Время работы данной программы зависит от количества данных и качества подключения к сети интернет. Наберитесь терпения.
+\end{Notes}
+
+\subsection{} Для продолжения установки, понадобиться утилита qemu позволяющая эмулировать различные архитектуры. Скопируйте исполняемый файл qemu:
 \begin{lstlisting}[style=bash]
 # sudo cp /usr/bin/qemu-mips64el-static ./rootfs/usr/bin
 \end{lstlisting}
-и перейдём в созданную rootfs, (привет дедушка контейнеров, chroot)
+и перейдите в созданную папку rootfs, (привет дедушка контейнеров, chroot)
 \begin{lstlisting}[style=bash]
 # sudo chroot ./rootfs
 \end{lstlisting}
@@ -52,29 +56,41 @@
 # /debootstrap/debootstrap --second-stage
 \end{lstlisting}
 
-\subsection{}Добавим источники для установки ПО, для этого выполним следующие команды 
+\subsection{}Необходимо добавить источники для установки ПО. Откройте файл со списком источников обновления для редактирования выполнив команду: 
 \begin{lstlisting}[style=bash]
-# echo deb http://ftp.debian.org/debian buster \
-main contrib non-free  >> /etc/apt/sources.list
-
-# echo deb-src http://ftp.debian.org/debian buster \
-main contrib non-free >> /etc/apt/sources.list
-
-# echo deb http://ftp.debian.org/debian buster-updates \
-main contrib non-free >> /etc/apt/sources.list
-
-# echo deb-src http://ftp.debian.org/debian buster-updates \
-main contrib non-free >> /etc/apt/sources.list
+ 	# nano /etc/apt/sources.list
 \end{lstlisting}
 
-\subsection{} Обновим список, и установим ряд приложений
+Проверьте и добавьте, если отсутствуют, следующие строки (обратите внимание, что знак '\textbackslash' писать нельзя, каждая строка начинается с deb или deb-src и заканчивается non-free-firmware) 
+\begin{lstlisting}[style=bash]
+deb http://ftp.debian.org/debian bookworm main contrib \
+non-free non-free-firmware
+
+deb-src http://ftp.debian.org/debian bookworm main contrib \
+non-free non-free-firmware
+
+deb http://ftp.debian.org/debian bookworm-updates main contrib \
+non-free non-free-firmware
+
+deb-src http://ftp.debian.org/debian bookworm-updates main contrib \
+non-free non-free-firmware
+\end{lstlisting}
+
+Файл должен выглядить как на картинке
+\begin{center}
+	\includegraphics[width=\textwidth]{pic_26}
+\end{center}
+
+Сохраните изменения (Ctrl + w) и выйдите из редактора (Ctrl + x).
+
+\subsection{} Обновите список, и установите ряд дополнительных приложений
 \begin{lstlisting}[style=bash]
 # apt-get update
 # apt-get install -y dialog sudo less i2c-tools evtest mc \
 openssh-server resolvconf hwinfo net-tools
 \end{lstlisting}
 
-\subsection{}Зададим пароль для root пользователя
+\subsection{}Задайте пароль для пользователя root, для чего вызовите утилиты passwd передав ей в качестве параметра имя пользователя 
 \begin{lstlisting}[style=bash]
 # passwd root
 \end{lstlisting}
@@ -82,12 +98,12 @@ openssh-server resolvconf hwinfo net-tools
 
 Затем система попросит повторить пароль, снова введите root и завершите ввод нажатием клавиши Enter на клавиатуре.
 
-\subsection{}Настроим работу сетевого интерфейса со статическим адресом, для этого создадим файл в каталоге /etc/network/interfaces.d/
+\subsection{}Настройте работу сетевого интерфейса со статическим адресом, для этого создайте файл в каталоге /etc/network/interfaces.d/
 
 \begin{lstlisting}[style=bash]
 # nano /etc/network/interfaces.d/eth0
 \end{lstlisting}
-и впишем туда следующие строки:
+и впишите туда следующие строки:
 
 \begin{lstlisting}[style=stdout]
 auto eth0
@@ -105,13 +121,13 @@ auto eth0
 
 Выходим из редактора nano, нажав комбинацию клавиш Ctrl+X. Будет задан вопрос о сохранении изменения в файле, жмём Y и клавишу Enter.
 
-\subsection{}Настроим имя компьютера
+\subsection{}Укажите имя компьютера
 
 \begin{lstlisting}[style=bash]
 # echo baget > /etc/hostname
 \end{lstlisting}
 
-\subsection{}Завершим настройку rootfs
+\subsection{}На этом первоначальная настройка файловой системы окончена. Выйдите из chroot и удалите файл qemu. 
 
 \begin{lstlisting}[style=bash]
 # exit
@@ -132,11 +148,11 @@ auto eth0
 	\includegraphics[width=\textwidth]{pic_04}
 \end{center}
 
-\subsection{}Необходимо узнать точку монтирования SD карты. Она может отличатся в зависимости от ридера, который  используется для работы с картой памяти. Для упрощения ввода, выполните команду в консоле:
+\subsection{}Необходимо узнать точку монтирования SD карты. Она может отличатся в зависимости от ридера, который  используется для работы с картой памяти. Для упрощения ввода, выполните команду в консоли для получения списка примонтированных устройств:
 \begin{lstlisting}[style=bash]
 # mount | grep ^/dev
 \end{lstlisting}
-для получения списка примонтированных устройств, при этом командой grep происходит фильтрация лишнего вывода, и отображается только список блочных устройств. Вывод будет примерно как на рисунке
+Команда grep служит для фильтрация лишнего вывода. На экране будет показан список блочных устройств. Вывод будет примерно как на рисунке
 
 \begin{center}
 	\includegraphics[width=\textwidth]{pic_05}
@@ -144,7 +160,7 @@ auto eth0
 
 Первые две строчки, это разделы виртуального жёсткого диска, далее точка монтирования SD карты (/media/student/…)
 
-Для упрощения ввода, создадим временную системную переменную, которой назначим путь, для примера\textbf{(!)} на рисунке выше:
+Для упрощения ввода, создайте временную системную переменную, которая будет хранить путь к корню на SD карты. Для примера\textbf{(!)} на рисунке выше:
 \begin{lstlisting}[style=bash]
 # export BAGET_SD=\
 /media/student/3c65af7a-5105-4c2a-aae5-081235c786d4
@@ -162,7 +178,7 @@ auto eth0
 \begin{lstlisting}[style=bash]
 # sudo cp -a $BAGET/lab_01/rootfs/* $BAGET_SD/
 \end{lstlisting}
-и отмантируйте SD карту 
+и отмонтируйте SD карту 
 \begin{lstlisting}[style=bash]
 # sudo umount $BAGET_SD
 \end{lstlisting}
@@ -171,11 +187,7 @@ auto eth0
 
 \subsection{}Подключите USB кабелем плату к ПК. Проверьте, и при необходимости подключите USB устройство FTDI RBM\_C1K5500VK018 к виртуальной машине (меню Device→USB).
 
-\subsection{} Запустите программу gtkterm или нажмите Ctrl+Shift+T для открытия новой вкладки в окне терминала и выполните команду 
-
-\begin{lstlisting}[style=bash]
-	# minicom -D/dev/ttyUSB1
-\end{lstlisting}
+\subsection{} Запустите программу gtkterm 
 \begin{center}
 	\includegraphics[width=\textwidth]{pic_06}
 \end{center}
@@ -186,6 +198,12 @@ auto eth0
 \end{center}
 
 Нажмите кнопку OK.
+
+или нажмите Ctrl+Shift+T для открытия новой вкладки в окне терминала и выполните команду 
+
+\begin{lstlisting}[style=bash]
+	# minicom -D/dev/ttyUSB1
+\end{lstlisting}
 
 Если в окне не появился текст, и на нажатие клавиши Enter так же нет реакции,  нажмите на кнопку Reset на плате. Изучите вывод, там будет написано, что пошло не так.
 
@@ -208,12 +226,14 @@ srisa-sdhci 1b50b000.sdhci@1b50b000.of: r0 00000000 r1 00000000 r2 00000000 r3 0
 \begin{lstlisting}[style=bash]
 $ poweroff
 \end{lstlisting}
-дождитесь, как появится надпись
+дождитесь, пока не появится надпись
 \begin{lstlisting}[style=stdout]
 reboot: System halt
 \end{lstlisting}
 после чего отключите USB кабель от ПК или платы. 
 
+Если к плате подключались через команду minicom, для выхода нажмите Ctrl+A а затем X. Выберите Yes и нажмите Enter.
+ 
 \section{Задание для самостоятельной работы}
 
 Внесите изменения в копию файловой системы на ПК, и запишите её на SD карту платы. В обновлении должны быть установлены следующие пакеты:
