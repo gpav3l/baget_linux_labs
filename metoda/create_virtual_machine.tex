@@ -95,12 +95,28 @@
 	\label{fig:vm_04}
 \end{figure} 
 
-\subsection{}Добавить про сетевой адаптер
+\subsection{} Перейдите на вкладку Network (пункт 1 на рисунке \ref{fig:vm_05}), выберите режим Bridget Adapter (2) для проброса физического сетевого адаптера в виртуальную машину, и укажите сетевой интерфейс (3), доступ к которому должна получить виртуальная машина. 
+
+\begin{figure}[hbt!]
+	\centering\includegraphics[width=\textwidth]{vm_install_07}
+	\caption{Настройка первого сетевого интерфейса}
+	\label{fig:vm_05}
+\end{figure} 
+
+\subsection{} Выберите вкладку Adapter 2 ( пункт 1 на рисунок \ref{fig:vm_06}) отметте Enable Network (2). Выберите тип подключения NAT (3). Через этот интерфейс виртуальная машина будет иметь доступ к сети интернет.
+
+\subsection{} Нажмите кнопку OK что бы изменения вступили в силу.
+
+\begin{figure}[hbt!]
+	\centering\includegraphics[width=\textwidth]{vm_install_08}
+	\caption{Настройка второго сетевого интерфейса}
+	\label{fig:vm_06}
+\end{figure} 
 
 \subsection{}Закройте окно настройки.
 
 \section{Настройка гостевой машины}
-\subsection{}Запустите гостевую машину. После окончания загрузки, нажмите на иконку \includegraphics{kubuntu_start} в левом нижнем углу, выберите вкладку Favorites и справа, из списка приложений выберите программу терминал Konsole (так же это приложение можно открыть с помощью комбинации клавиш Ctrl + Alt + T).
+\subsection{} Запустите гостевую машину. После окончания загрузки, нажмите на иконку \includegraphics{kubuntu_start} в левом нижнем углу, выберите вкладку Favorites и справа, из списка приложений выберите программу терминал Konsole (так же это приложение можно открыть с помощью комбинации клавиш Ctrl + Alt + T).
 
 \subsection{}В открывшемся терминале вбейте следующую команду:
 \begin{lstlisting}[style=bash]
@@ -110,7 +126,7 @@
 	--key 'Enabled' 'false'
 \end{lstlisting}
 
-\subsection{}Добавим расширения для взаимодействия между гостевой машиной и хостом.
+\subsection{} Добавим расширения для взаимодействия между гостевой машиной и хостом.
 \begin{lstlisting}[style=bash]
 	# sudo apt install build-essential dkms -y
 	
@@ -126,15 +142,12 @@
 	# sudo shutdown -r now
 \end{lstlisting}
 
-mips64el-linux-gnu-gcc (C компилятор) и mips64el-linux-gnu-g++ (C++ компилятор), компилятор дерева устройств device-tree-compiler, архив с заголовочными файлами ядра Linux установленного на плате, утилита debootstrap, IDE VSCode и прочие полезные инструменты. 
-
-
 \subsection{} Установите дополнительные пакеты
   
 \begin{lstlisting}[style=bash]
 	# sudo apt install -y gcc-mips64el-linux-gnuabi64 \
 	g++-mips64el-linux-gnuabi64 qemu-system-mips64el \
-	qemu-user-static gdb-multiarch
+	qemu-user-static gdb-multiarch gtkterm minicom
 	
 	# sudo apt install -y git device-tree-compiler debootstrap
 \end{lstlisting}
@@ -175,28 +188,37 @@ mips64el-linux-gnu-gcc (C компилятор) и mips64el-linux-gnu-g++ (C++ �
 \subsection{} Настройте автоматическое монтирование для USB устройств.
 Для этого откройте программу Settings \includegraphics{vm_install_05}.
 
-В открывшемся окне (рисунок \ref{fig:vm_06}), в строке поиска вбейте Remov, и выберите ниже пункт Removable Devices. Отметьте пункты, как показано на рисунке \ref{fig:vm_06}. 
+В открывшемся окне (рисунок \ref{fig:vm_07}), в строке поиска вбейте Remov, и выберите ниже пункт Removable Devices. Отметьте пункты, как показано на рисунке \ref{fig:vm_07}. 
 
 \begin{figure}[hbt!]
 	\centering\includegraphics[width=\textwidth]{vm_install_06}
 	\caption{Подключение автоматического монтирования устройств}
-	\label{fig:vm_06}
+	\label{fig:vm_07}
 \end{figure} 
 
 Нажмите кнопку Apply.
 
-\subsection{} Установите дополнительные программы
-\begin{lstlisting}
-	sudo apt install -y gtkterm minicom
-\end{lstlisting}
+\subsection{} Вбейте в строку поиска слово connections и выберите вкладку Connections. В данной вкладке происходит настройка сетевых интерфейсов виртуальной машины.
 
-\subsection{} Добавьте программы в Избранное, для простоты их поиска.
+Выберите тот, что не отвечает за интернет (теоретически это Wired connection 1), и перейдите во вкладку IPv4.
+
+В поле Method выберите Manual.
+
+Нажмите кнопку +Add справа от таблицы. В колонку Address введите 192.168.100.2 и нажмите Enter. В колонка Netmask должна появиться надпись 255.255.255.0, скорректируйте её, если она отличается.
+
+Нажмите кнопку Apply.
+
+\subsection{} Добавьте необходимые программы в Избранное.
 Нажмите на иконку \includegraphics{kubuntu_start} в левом нижнем углу, и в поле search введите terminal. Нажмите правой кнопкой на программе Serial port terminal и выберите пункт Add to Favorites.
 
 Повторите тоже самое для VSCode, для чего в поле поиска нужно вписать слово code, и найти Visual Studio Code.
 
-\subsection{}Добавьте пользователя student в группу dialout, что бы можно было подключаться к последовательному порту без прав администратора.
+\subsection{} Добавьте пользователя student в группу dialout, что бы можно было подключаться к последовательному порту без прав администратора.
+
 \begin{lstlisting}
 	sudo usermod student -aG dialout
 \end{lstlisting}
 
+\subsection{} Выключите виртуальную машину.
+
+\subsection{} Сохраните состояние виртуальной машины (Snapshot)  или скопируйте её, что бы по завершению курса можно было её состояние вернуть в первоначальное, и не повторять все настройки описанные выше. 
