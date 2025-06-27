@@ -38,9 +38,9 @@
 	Время работы данной программы зависит от количества данных и качества подключения к сети интернет. Наберитесь терпения.
 \end{Notes}
 
-\subsection{} Для продолжения установки, понадобиться утилита qemu позволяющая эмулировать различные архитектуры. Скопируйте исполняемый файл qemu:
+\subsection{} Для продолжения установки, понадобиться утилита qemu позволяющая эмулировать различные архитектуры. Создайте символьную ссылку на него в директории rootfs (в противном случае нужно было бы удалить этот файл перед переносом на пату):
 \begin{lstlisting}[style=bash]
-# sudo cp /usr/bin/qemu-mips64el-static ./rootfs/usr/bin
+# sudo ln -s /usr/bin/qemu-mips64el-static ./rootfs/usr/bin/
 \end{lstlisting}
 и перейдите в созданную папку rootfs, (привет дедушка контейнеров, chroot)
 \begin{lstlisting}[style=bash]
@@ -87,7 +87,7 @@ non-free non-free-firmware
 \begin{lstlisting}[style=bash]
 # apt-get update
 # apt-get install -y dialog sudo less i2c-tools evtest mc \
-openssh-server resolvconf hwinfo net-tools
+openssh-server resolvconf hwinfo net-tools bsdmainutils
 \end{lstlisting}
 
 \subsection{} Задайте пароль для пользователя root, для чего вызовите утилиты passwd передав ей в качестве параметра имя пользователя 
@@ -127,11 +127,10 @@ auto eth0
 # echo baget > /etc/hostname
 \end{lstlisting}
 
-\subsection{} На этом первоначальная настройка файловой системы окончена. Выйдите из chroot и удалите файл qemu. 
+\subsection{} На этом первоначальная настройка файловой системы окончена. Выйдите из chroot. 
 
 \begin{lstlisting}[style=bash]
 # exit
-# sudo rm ./rootfs/usr/bin/qemu-mips64el-static
 \end{lstlisting}
 
 \subsection{} Скопируйте папку barebox из каталога support в корень созданной ранее rootfs
